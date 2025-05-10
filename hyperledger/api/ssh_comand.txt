@@ -1,0 +1,1 @@
+sed ':a;N;$!ba;s/\n/\\n/g' ../fabric_artifacts/crypto-config/peerOrganizations/samsung.product.authenticity.com/ca/ca.samsung.product.authenticity.com-cert.pem

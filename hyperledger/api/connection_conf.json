@@ -1,0 +1,132 @@
+{
+    "name": "Authenticity Product Connection Config",
+    "version": "1.0.0",
+    "client": {
+        "organization": "Org1",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "Org1": {
+            "mspid": "Samsung1MSP",
+            "peers": [
+                "peer0.samsung.product.authenticity.com",
+                "peer1.samsung.product.authenticity.com"
+            ],
+            "certificateAuthorities": [
+                "ca.samsung.product.authenticity.com"
+            ]
+        },
+        "Org2": {
+            "mspid": "Sony2MSP",
+            "peers": [
+                "peer0.sony.product.authenticity.com",
+                "peer1.sony.product.authenticity.com"
+            ],
+            "certificateAuthorities": [
+                "ca.sony.product.authenticity.com"
+            ]
+        }
+    },
+    "orderers": {
+        "orderer0.product.authenticity.com": {
+            "url": "grpcs://192.168.56.4:7050",
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer0.product.authenticity.com",
+                "request-timeout": 12000
+            },
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICeDCCAh+gAwIBAgIQc0xuCGvJg2V56u5SD4bQWzAKBggqhkjOPQQDAjCBhjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xITAfBgNVBAoTGHByb2R1Y3QuYXV0aGVudGljaXR5LmNvbTEnMCUG\nA1UEAxMedGxzY2EucHJvZHVjdC5hdXRoZW50aWNpdHkuY29tMB4XDTI1MDIyNDE3\nMDcwMFoXDTM1MDIyMjE3MDcwMFowgYYxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpD\nYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMSEwHwYDVQQKExhwcm9k\ndWN0LmF1dGhlbnRpY2l0eS5jb20xJzAlBgNVBAMTHnRsc2NhLnByb2R1Y3QuYXV0\naGVudGljaXR5LmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABPRpbp606/zw\nAjtwey8I3jXWmhWijfMz9Ob8lop2bHS8Oawuy3+3RFL32yb+ygzjS+UMTA2QOwj3\ncKCY+cvyJDijbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcD\nAgYIKwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgk7kK5Ymv8iou\nNuX2siPaV2dfn/HWtZZq9OOBn2dLw/IwCgYIKoZIzj0EAwIDRwAwRAIgWag6MlNT\n6vLLi2aQo4y+gDFVampGKudq+iO1Q9foOmwCIDnC7k7P3FUooWAXTv6IgcdtlP5y\nZwzafyQ72ZZ8WUAu\n-----END CERTIFICATE-----"
+            }
+        },
+        "orderer1.product.authenticity.com": {
+            "url": "grpcs://192.168.56.4:8050",
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer1.product.authenticity.com",
+                "request-timeout": 12000
+            },
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICeDCCAh+gAwIBAgIQc0xuCGvJg2V56u5SD4bQWzAKBggqhkjOPQQDAjCBhjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xITAfBgNVBAoTGHByb2R1Y3QuYXV0aGVudGljaXR5LmNvbTEnMCUG\nA1UEAxMedGxzY2EucHJvZHVjdC5hdXRoZW50aWNpdHkuY29tMB4XDTI1MDIyNDE3\nMDcwMFoXDTM1MDIyMjE3MDcwMFowgYYxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpD\nYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMSEwHwYDVQQKExhwcm9k\ndWN0LmF1dGhlbnRpY2l0eS5jb20xJzAlBgNVBAMTHnRsc2NhLnByb2R1Y3QuYXV0\naGVudGljaXR5LmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABPRpbp606/zw\nAjtwey8I3jXWmhWijfMz9Ob8lop2bHS8Oawuy3+3RFL32yb+ygzjS+UMTA2QOwj3\ncKCY+cvyJDijbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcD\nAgYIKwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgk7kK5Ymv8iou\nNuX2siPaV2dfn/HWtZZq9OOBn2dLw/IwCgYIKoZIzj0EAwIDRwAwRAIgWag6MlNT\n6vLLi2aQo4y+gDFVampGKudq+iO1Q9foOmwCIDnC7k7P3FUooWAXTv6IgcdtlP5y\nZwzafyQ72ZZ8WUAu\n-----END CERTIFICATE-----"
+            }
+        },
+        "orderer2.product.authenticity.com": {
+            "url": "grpcs://192.168.56.4:9050",
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer2.product.authenticity.com",
+                "request-timeout": 12000
+            },
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICeDCCAh+gAwIBAgIQc0xuCGvJg2V56u5SD4bQWzAKBggqhkjOPQQDAjCBhjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xITAfBgNVBAoTGHByb2R1Y3QuYXV0aGVudGljaXR5LmNvbTEnMCUG\nA1UEAxMedGxzY2EucHJvZHVjdC5hdXRoZW50aWNpdHkuY29tMB4XDTI1MDIyNDE3\nMDcwMFoXDTM1MDIyMjE3MDcwMFowgYYxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpD\nYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMSEwHwYDVQQKExhwcm9k\ndWN0LmF1dGhlbnRpY2l0eS5jb20xJzAlBgNVBAMTHnRsc2NhLnByb2R1Y3QuYXV0\naGVudGljaXR5LmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABPRpbp606/zw\nAjtwey8I3jXWmhWijfMz9Ob8lop2bHS8Oawuy3+3RFL32yb+ygzjS+UMTA2QOwj3\ncKCY+cvyJDijbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcD\nAgYIKwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgk7kK5Ymv8iou\nNuX2siPaV2dfn/HWtZZq9OOBn2dLw/IwCgYIKoZIzj0EAwIDRwAwRAIgWag6MlNT\n6vLLi2aQo4y+gDFVampGKudq+iO1Q9foOmwCIDnC7k7P3FUooWAXTv6IgcdtlP5y\nZwzafyQ72ZZ8WUAu\n-----END CERTIFICATE-----"
+            }
+        }
+    },
+    "peers": {
+        "peer0.samsung.product.authenticity.com": {
+            "url": "grpcs://192.168.56.4:7051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICmjCCAkCgAwIBAgIRAOMB1XzKThpzD2X+bW4S/sMwCgYIKoZIzj0EAwIwgZYx\nCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4g\nRnJhbmNpc2NvMSkwJwYDVQQKEyBzYW1zdW5nLnByb2R1Y3QuYXV0aGVudGljaXR5\nLmNvbTEvMC0GA1UEAxMmdGxzY2Euc2Ftc3VuZy5wcm9kdWN0LmF1dGhlbnRpY2l0\neS5jb20wHhcNMjUwMjI0MTcwNzAwWhcNMzUwMjIyMTcwNzAwWjCBljELMAkGA1UE\nBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lz\nY28xKTAnBgNVBAoTIHNhbXN1bmcucHJvZHVjdC5hdXRoZW50aWNpdHkuY29tMS8w\nLQYDVQQDEyZ0bHNjYS5zYW1zdW5nLnByb2R1Y3QuYXV0aGVudGljaXR5LmNvbTBZ\nMBMGByqGSM49AgEGCCqGSM49AwEHA0IABAxZX+L+C1fhIsTVeyTFBCvcyX6vqMBo\niYbOdRf2QU44p9diQNN1ks7hHadhvnQzCWqa1fGIDruhxVvDFCnrziyjbTBrMA4G\nA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwDwYD\nVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgw694vdQLvgWOMOgb6/L1br0Rs5xlqB4t\nJEzxZjG8MbAwCgYIKoZIzj0EAwIDSAAwRQIgT3Y8c0W1cnBMqW3xkiCZd4FjJoaV\nj0A81ilDIaFOIbICIQDMr8Wf4JG8hY+Aui/qkmhLLA55H3qbDKpZnwPmvBm46A==\n-----END CERTIFICATE-----"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.samsung.product.authenticity.com",
+                "hostnameOverride": "peer0.samsung.product.authenticity.com"
+            }
+        },
+        "peer1.samsung.product.authenticity.com": {
+            "url": "grpcs://192.168.56.4:8051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICmjCCAkCgAwIBAgIRAOMB1XzKThpzD2X+bW4S/sMwCgYIKoZIzj0EAwIwgZYx\nCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4g\nRnJhbmNpc2NvMSkwJwYDVQQKEyBzYW1zdW5nLnByb2R1Y3QuYXV0aGVudGljaXR5\nLmNvbTEvMC0GA1UEAxMmdGxzY2Euc2Ftc3VuZy5wcm9kdWN0LmF1dGhlbnRpY2l0\neS5jb20wHhcNMjUwMjI0MTcwNzAwWhcNMzUwMjIyMTcwNzAwWjCBljELMAkGA1UE\nBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lz\nY28xKTAnBgNVBAoTIHNhbXN1bmcucHJvZHVjdC5hdXRoZW50aWNpdHkuY29tMS8w\nLQYDVQQDEyZ0bHNjYS5zYW1zdW5nLnByb2R1Y3QuYXV0aGVudGljaXR5LmNvbTBZ\nMBMGByqGSM49AgEGCCqGSM49AwEHA0IABAxZX+L+C1fhIsTVeyTFBCvcyX6vqMBo\niYbOdRf2QU44p9diQNN1ks7hHadhvnQzCWqa1fGIDruhxVvDFCnrziyjbTBrMA4G\nA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwDwYD\nVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgw694vdQLvgWOMOgb6/L1br0Rs5xlqB4t\nJEzxZjG8MbAwCgYIKoZIzj0EAwIDSAAwRQIgT3Y8c0W1cnBMqW3xkiCZd4FjJoaV\nj0A81ilDIaFOIbICIQDMr8Wf4JG8hY+Aui/qkmhLLA55H3qbDKpZnwPmvBm46A==\n-----END CERTIFICATE-----"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.samsung.product.authenticity.com",
+                "hostnameOverride": "peer1.samsung.product.authenticity.com"
+            }
+        },
+        "peer0.sony.product.authenticity.com": {
+            "url": "grpcs://192.168.56.4:9051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICjjCCAjSgAwIBAgIRANRZ6+17DyU/Vn9cnTce+j4wCgYIKoZIzj0EAwIwgZAx\nCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4g\nRnJhbmNpc2NvMSYwJAYDVQQKEx1zb255LnByb2R1Y3QuYXV0aGVudGljaXR5LmNv\nbTEsMCoGA1UEAxMjdGxzY2Euc29ueS5wcm9kdWN0LmF1dGhlbnRpY2l0eS5jb20w\nHhcNMjUwMjI0MTcwNzAwWhcNMzUwMjIyMTcwNzAwWjCBkDELMAkGA1UEBhMCVVMx\nEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xJjAk\nBgNVBAoTHXNvbnkucHJvZHVjdC5hdXRoZW50aWNpdHkuY29tMSwwKgYDVQQDEyN0\nbHNjYS5zb255LnByb2R1Y3QuYXV0aGVudGljaXR5LmNvbTBZMBMGByqGSM49AgEG\nCCqGSM49AwEHA0IABF+sCCH/zTnEej3LUMi8k/YHJdkvvEFxMwsTLlHsatWmrjja\nGLwxp4vtppljzCqUctbGYvPPLwzPFTDJH5yn9A2jbTBrMA4GA1UdDwEB/wQEAwIB\npjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB\n/zApBgNVHQ4EIgQgMiVSX3BAT0/Oyzm8irejxhFn3/cP56yJUug0llqhPEQwCgYI\nKoZIzj0EAwIDSAAwRQIgYSybfG47w/yqgLF2ZPyl//o/Q+AxOjqtZavafb/yE6sC\nIQDOK4fFjB1I4U3F30f74/uDHhT/926GA9obrEVmAjOCRA==\n-----END CERTIFICATE-----"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.sony.product.authenticity.com",
+                "hostnameOverride": "peer0.sony.product.authenticity.com"
+            }
+        },
+        "peer1.sony.product.authenticity.com": {
+            "url": "grpcs://192.168.56.4:10051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICjjCCAjSgAwIBAgIRANRZ6+17DyU/Vn9cnTce+j4wCgYIKoZIzj0EAwIwgZAx\nCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4g\nRnJhbmNpc2NvMSYwJAYDVQQKEx1zb255LnByb2R1Y3QuYXV0aGVudGljaXR5LmNv\nbTEsMCoGA1UEAxMjdGxzY2Euc29ueS5wcm9kdWN0LmF1dGhlbnRpY2l0eS5jb20w\nHhcNMjUwMjI0MTcwNzAwWhcNMzUwMjIyMTcwNzAwWjCBkDELMAkGA1UEBhMCVVMx\nEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xJjAk\nBgNVBAoTHXNvbnkucHJvZHVjdC5hdXRoZW50aWNpdHkuY29tMSwwKgYDVQQDEyN0\nbHNjYS5zb255LnByb2R1Y3QuYXV0aGVudGljaXR5LmNvbTBZMBMGByqGSM49AgEG\nCCqGSM49AwEHA0IABF+sCCH/zTnEej3LUMi8k/YHJdkvvEFxMwsTLlHsatWmrjja\nGLwxp4vtppljzCqUctbGYvPPLwzPFTDJH5yn9A2jbTBrMA4GA1UdDwEB/wQEAwIB\npjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB\n/zApBgNVHQ4EIgQgMiVSX3BAT0/Oyzm8irejxhFn3/cP56yJUug0llqhPEQwCgYI\nKoZIzj0EAwIDSAAwRQIgYSybfG47w/yqgLF2ZPyl//o/Q+AxOjqtZavafb/yE6sC\nIQDOK4fFjB1I4U3F30f74/uDHhT/926GA9obrEVmAjOCRA==\n-----END CERTIFICATE-----"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.sony.product.authenticity.com",
+                "hostnameOverride": "peer1.sony.product.authenticity.com"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.samsung.product.authenticity.com": {
+            "url": "https://192.168.56.4:7054",
+            "caName": "ca.samsung.product.authenticity.com",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIIClDCCAjqgAwIBAgIRAK4U6gnV+6kTozy4UfjRTjUwCgYIKoZIzj0EAwIwgZMx\nCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4g\nRnJhbmNpc2NvMSkwJwYDVQQKEyBzYW1zdW5nLnByb2R1Y3QuYXV0aGVudGljaXR5\nLmNvbTEsMCoGA1UEAxMjY2Euc2Ftc3VuZy5wcm9kdWN0LmF1dGhlbnRpY2l0eS5j\nb20wHhcNMjUwMjI0MTcwNzAwWhcNMzUwMjIyMTcwNzAwWjCBkzELMAkGA1UEBhMC\nVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28x\nKTAnBgNVBAoTIHNhbXN1bmcucHJvZHVjdC5hdXRoZW50aWNpdHkuY29tMSwwKgYD\nVQQDEyNjYS5zYW1zdW5nLnByb2R1Y3QuYXV0aGVudGljaXR5LmNvbTBZMBMGByqG\nSM49AgEGCCqGSM49AwEHA0IABGjtycearBqS2dmV5r5eHP9ZhWxj61UJKeXgGTL4\nhhBOG+DV2brz54ZvprE6DbemF42fQNVUKg5g4jNuRgqOFTqjbTBrMA4GA1UdDwEB\n/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwDwYDVR0TAQH/\nBAUwAwEB/zApBgNVHQ4EIgQgGtgEhWPuB9zA1Mt7VJPrYiySIC0x6eDVXsduw9Ru\nrZwwCgYIKoZIzj0EAwIDSAAwRQIhAIlhKDsLzt848KzLHnBVO5c7UaSG9EjxT9CN\ndvPyD2hKAiBWxuiL1XpJuNhwFM/yjWBt9FK5JJoq6AMVSSv/+wWmPQ==\n-----END CERTIFICATE-----"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        },
+        "ca.sony.product.authenticity.com": {
+            "url": "https://192.168.56.4:8054",
+            "caName": "ca.sony.product.authenticity.com",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICiTCCAi6gAwIBAgIRAKeR6Bb5mJL55iq4CTpvAegwCgYIKoZIzj0EAwIwgY0x\nCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4g\nRnJhbmNpc2NvMSYwJAYDVQQKEx1zb255LnByb2R1Y3QuYXV0aGVudGljaXR5LmNv\nbTEpMCcGA1UEAxMgY2Euc29ueS5wcm9kdWN0LmF1dGhlbnRpY2l0eS5jb20wHhcN\nMjUwMjI0MTcwNzAwWhcNMzUwMjIyMTcwNzAwWjCBjTELMAkGA1UEBhMCVVMxEzAR\nBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xJjAkBgNV\nBAoTHXNvbnkucHJvZHVjdC5hdXRoZW50aWNpdHkuY29tMSkwJwYDVQQDEyBjYS5z\nb255LnByb2R1Y3QuYXV0aGVudGljaXR5LmNvbTBZMBMGByqGSM49AgEGCCqGSM49\nAwEHA0IABLpGOJNso/5wj1/JE/oXJq/NAkGeEo0NDzT1EVshfcH6Z/L3akJXEGrE\n/+P4ZyQjdBQQF4uHFx4+YGFepssJoZGjbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNV\nHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNV\nHQ4EIgQgqdhvLq62zq0zGNfOUK1vUV2MVJSq1xgm8l+seals5HcwCgYIKoZIzj0E\nAwIDSQAwRgIhALvv4tmuX5aEMP3wvGQf77yLM3iuQwHDeGg08xOTzbx5AiEAs/Qd\nUqLLsDfJCssv3hLGTClM81+Ez/j4DV3Y7rrwQcw=\n-----END CERTIFICATE-----"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

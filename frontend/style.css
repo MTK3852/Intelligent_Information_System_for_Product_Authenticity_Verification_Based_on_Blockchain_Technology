@@ -1,0 +1,951 @@
+body {
+	background-color: #2c3e50;
+	font-family: 'Press Start 2P', cursive;
+	color: #fff;
+	margin: 0;
+}
+
+.container {
+	text-align: center;
+	/* display: flex; */
+	/* flex-direction: column; */
+	align-items: flex-start;
+	/* justify-content: flex-start; */
+	/* min-height: 100vh; */
+	padding-top: 80px;
+}
+
+.result-text {
+	color: yellow;
+	text: italic;
+}
+
+h1 {
+	font-size: 4rem;
+	text-align: center;
+	margin-top: 0;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 2rem;
+}
+
+input[type="text"] {
+	padding: 1rem;
+	border: none;
+	border-radius: 2rem;
+	font-size: 1.5rem;
+	margin-bottom: 1rem;
+	width: 40rem;
+	text-align: center;
+	background-color: #fff;
+	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
+}
+
+.search-button {
+	padding: 1rem 2rem;
+	border: none;
+	border-radius: 2rem;
+	font-size: 1.5rem;
+	background-color: #e67e22;
+	color: #fff;
+	cursor: pointer;
+	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
+}
+
+.buttons {
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: flex;
+	align-items: center;
+	margin: 1rem;
+}
+
+.buttons button {
+	padding: 1rem;
+	border: none;
+	border-radius: 2rem;
+	font-size: 1.5rem;
+	margin-left: 1rem;
+	background-color: #e67e22;
+	color: #fff;
+	cursor: pointer;
+	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
+}
+
+.about {
+	margin-top: 3rem;
+	font-size: 1.5rem;
+	text-align: center;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.auth-screen {
+	position: relative; /* For back button positioning */
+	padding: 20px;
+	padding-top: 60px; /* Extra padding for back button */
+	min-height: 80vh; 
+}
+
+.auth-screen .back-button {
+	position: absolute;
+	top: 15px; /* Position from top */
+	left: 15px; /* Position from left */
+	margin-left: 0; /* Override any inherited margin */
+	z-index: 11; /* Ensure it's clickable */
+}
+
+/* Center the item search result text */
+.search-result {
+	text-align: center;
+	width: 100%; /* Optional: Ensure it takes full width for centering */
+	margin-top: 1rem; /* Add some space above the result */
+}
+
+.auth-screen h2,
+#logged-in-welcome h2 {
+	text-align: center; /* Center headings on auth/welcome screens */
+	width: 100%; /* Ensure heading takes width for centering */
+}
+
+/* Define styles for the main search content area */
+#main-search-content,
+#login-screen,
+#register-screen,
+#logged-in-view,
+#admin-company-list-view,
+#statistics-view {
+    margin-top: 100px; /* Increased space below top nav buttons */
+}
+
+#main-search-content {
+    text-align: center; /* Center text content within this div */
+    /*width: 80%; */ /* Or max-width, adjust as needed */
+    /* You might need other styles here depending on layout */
+}
+
+/* Positioning for Top Right elements (Login/Register or Logout) */
+#top-right-nav,
+#logout-section {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    /* Add alignment if needed, e.g., for multiple items */
+    display: flex;
+    align-items: center;
+}
+
+/* Optional: Add some spacing between items in the logout section */
+#logout-section > * {
+    margin-left: 10px;
+}
+#logout-section > *:first-child {
+    margin-left: 0;
+}
+
+/* Positioning for Top Left elements (Back Button / Home / Stats) */
+#top-left-nav {
+    position: absolute;
+    top: 28px;
+    left: 15px;
+    z-index: 10;
+    display: flex; /* Align buttons inside if multiple */
+    align-items: center;
+}
+
+/* Make top navigation buttons smaller */
+#top-left-nav .search-button,
+#top-right-nav .search-button,
+#logout-section .search-button {
+    padding: 0.6rem 1.2rem; /* Reduced padding */
+    font-size: 1rem; /* Reduced font size */
+    background-color: #e67e22; /* Explicitly set orange color */
+}
+
+/* Explicitly set color for month nav buttons too */
+#month-nav .search-button {
+    background-color: #e67e22;
+}
+
+/* Style for disabled buttons */
+.search-button:disabled,
+button:disabled { /* Target general disabled buttons too */
+    background-color: #95a5a6; /* Muted grey */
+    color: #ecf0f1; /* Lighter text */
+    cursor: not-allowed; /* Indicate non-interactive */
+    opacity: 0.7; /* Slightly transparent */
+    box-shadow: none; /* Remove shadow when disabled */
+}
+
+/* Ensure specific disabled button styles if needed */
+#analyze-ai-button:disabled {
+    /* Add specific styles if the general ones aren't enough */
+}
+
+/* --- Modal Styles --- */
+.modal-overlay {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.6); /* Black w/ opacity */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+.modal-content {
+    background-color: #2c3e50; /* Dark background for modal */
+    color: #ecf0f1; /* Light text */
+    margin: auto; /* Auto margins for centering (backup) */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%; /* Use percentage for flexibility */
+    max-width: 450px; /* Increased Max width */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.modal-content p {
+    margin-bottom: 20px; /* Space between text and button */
+    font-size: 1.1em;
+}
+
+/* Use existing search-button style for consistency, or add specific modal button styles here */
+.modal-content button {
+    padding: 10px 25px;
+}
+
+.item-details {
+    flex-grow: 1; /* Allow details to take available space */
+    margin-right: 15px; /* Space before buttons */
+}
+
+/* Removed .item-actions styles as buttons are moved */
+
+/* Smaller buttons for list actions - no longer needed here */
+/* .small-button { ... } */
+
+/* Consistent Cancel Button Style */
+.cancel-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    text-align: left; /* Align text left */
+}
+
+.cancel-button:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+.copyable-cell {
+    cursor: pointer;
+}
+
+/* Admin Panel Action Buttons */
+#admin-action-buttons,
+#admin-company-action-buttons { /* Apply to both */
+    display: flex; /* Align buttons horizontally */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 15px; /* Increased spacing between buttons */
+    margin-bottom: 15px; /* Reverted margin-bottom */
+    padding-bottom: 5px; /* Reduced padding-bottom */
+    /* border-bottom: 1px solid #ccc; */ /* Separator using border instead of hr */
+}
+
+/* Specific button styles if needed */
+#modify-selected-button {
+    background-color: #f39c12; /* Orange/Yellow */
+}
+#modify-selected-button:hover {
+    background-color: #e67e22; /* Darker orange */
+}
+
+/* Add Item Form Container */
+#add-item-form-container {
+    display: none; /* Hidden by default */
+    margin-bottom: 15px;
+}
+
+#add-item-form {
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+/* Separator Line */
+hr.admin-separator {
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 0 0 15px 0; 
+}
+
+/* Checkbox in item list */
+.item-select-checkbox {
+    margin-right: 10px;
+    cursor: pointer;
+    /* Add more styling if needed */
+}
+
+/* Admin Panel / Logged-in View Styles */
+#logged-in-view,
+#admin-company-list-view,
+#statistics-view { /* ADDED #statistics-view */
+    /* Make it wider than the default container if needed */
+    /* max-width: 1000px; */
+    width: 90%; /* Example width */
+    margin: 20px auto; /* Keep side/bottom margins */
+    /* Update padding to increase top padding specifically */
+    padding: 20px; /* Restore original padding */
+    background-color: #f9f9f9; /* Slightly different background */
+    border: 2px solid #a0a0a0; /* Thicker border for separation */
+    border-radius: 20px; /* Increased rounding */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+    display: none; /* Start hidden */
+}
+
+#delete-selected-button,
+#delete-selected-companies-button { /* Apply to both delete buttons */
+    background-color: #c0392b; /* Red */
+}
+#delete-selected-button:hover,
+#delete-selected-companies-button:hover { /* Apply to both delete buttons */
+    background-color: #a93226; /* Darker red */
+}
+
+/* Styles for BOTH Item Table and Company Table */
+#company-item-table, 
+#all-companies-table, 
+.stats-table { /* ADDED .stats-table */
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    margin-bottom: 20px; /* ADDED margin below each table */
+}
+
+#company-item-table thead,
+#all-companies-table thead,
+.stats-table thead { /* ADDED .stats-table */
+    background-color: #34495e; /* Slightly darker blue header */
+}
+
+#company-item-table th, 
+#company-item-table td,
+#all-companies-table th, 
+#all-companies-table td,
+.stats-table th, 
+.stats-table td { /* ADDED .stats-table */
+    border: 1px solid #ddd;
+    padding: 8px 12px; /* Adjust padding */
+    text-align: left;
+    vertical-align: middle; /* Align checkbox vertically */
+    color: #333; /* Dark text for readability on light backgrounds */
+}
+
+#company-item-table th,
+#all-companies-table th,
+.stats-table th { /* ADDED .stats-table */
+    font-weight: bold;
+    color: #ecf0f1; /* Lighter text for header */
+    background-color: #34495e; /* Ensure header background is explicitly set */
+}
+
+#company-item-table tbody tr,
+#all-companies-table tbody tr,
+.stats-table tbody tr { /* ADDED .stats-table */
+    background-color: #fff;
+}
+
+#company-item-table tbody tr:nth-child(even),
+#all-companies-table tbody tr:nth-child(even),
+.stats-table tbody tr:nth-child(even) { /* ADDED .stats-table */
+    background-color: #f2f2f2; /* Light grey for even rows */
+}
+#company-item-table tbody tr:hover,
+#all-companies-table tbody tr:hover,
+.stats-table tbody tr:hover { /* ADDED .stats-table */
+    background-color: #e9e9e9; /* Slightly darker grey hover */
+}
+
+/* Limit width of stats tables if desired */
+.stats-table {
+    max-width: 600px; /* Example max-width */
+    margin-left: auto;  /* Center the table */
+    margin-right: auto; /* Center the table */
+}
+
+/* Style checkboxes in both tables */
+#company-item-table td input[type="checkbox"],
+#all-companies-table td input[type="checkbox"],
+.item-select-checkbox, /* Target class directly too */
+.company-select-checkbox { /* Target class directly too */
+    cursor: pointer;
+    width: 16px;  /* Explicit size */
+    height: 16px; /* Explicit size */
+    margin: 0 auto; /* Center if text-align not enough */
+    display: block; /* Needed for margin auto centering */
+}
+
+/* Set color for headings inside the admin panels */
+#admin-panel h2 {
+    color: #333; /* Dark grey/black for visibility on light background */
+    text-align: center; /* Ensure centered */
+    margin-bottom: 15px; /* Consistent spacing */
+}
+
+/* Heading above item table */
+#item-list-container h3 {
+    color: #343a40; /* Dark color similar to table text */
+    /* margin-bottom: 10px; */ /* Remove bottom margin */
+    text-align: left; /* Ensure alignment */
+}
+
+/* General Modal Styles (Apply to all modals) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+    /* Use Flexbox to center the modal content */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #2c3e50; /* Dark blue background */
+    margin: auto; /* Auto margins work with flex centering */
+    padding: 25px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more specific */
+    max-width: 500px; /* Maximum width */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    text-align: center;
+    border-radius: 8px;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    color: #ecf0f1; /* Light title color */
+}
+
+.modal-content p {
+    color: #bdc3c7; /* Lighter text color */
+    margin-bottom: 20px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-around; /* Space out buttons */
+    margin-top: 20px;
+}
+
+.modal-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    min-width: 80px;
+}
+
+.modal-button-yes {
+    background-color: #e74c3c; /* Red for destructive action */
+    color: white;
+}
+
+.modal-button-yes:hover {
+    background-color: #c0392b; /* Darker red on hover */
+}
+
+.modal-button-no {
+    background-color: #3498db; /* Blue for cancel/safe action */
+    color: white;
+}
+
+.modal-button-no:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+}
+
+/* Specific styles if needed for registration modal */
+#registration-success-modal .search-button {
+    padding: 10px 25px; /* Adjust if needed */
+}
+
+.copyable-cell {
+    cursor: pointer;
+}
+
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+    #top-right-nav,
+    #logout-section {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #logout-section > * {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    #logout-section > *:first-child {
+        margin-top: 0;
+    }
+}
+
+/* --- QR Code Styling --- */
+
+.qr-code-cell {
+    position: relative; /* Needed for absolute positioning of the container */
+    min-width: 70px; /* Ensure cell has some minimum width */
+    height: 70px; /* Ensure cell has some minimum height */
+    text-align: center; /* Center the default small QR */
+    vertical-align: middle;
+}
+
+.qr-code-container {
+    position: absolute; /* Allows positioning relative to cell */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1); /* Start centered and normal size */
+    transform-origin: center center; /* Scale from the center */
+    width: 64px; /* Match initial JS generation */
+    height: 64px;
+    background-color: white; /* Ensure background for visibility when enlarged */
+    padding: 4px; /* Small padding around the QR code */
+    border: 1px solid #ccc; /* Light border */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Subtle shadow */
+    z-index: 1; /* Default stacking */
+    transition: transform 0.2s ease-in-out, z-index 0s linear 0.2s; /* Smooth scaling, delay z-index change */
+    overflow: hidden; /* Hide anything outside the container - Restore this */
+    cursor: pointer; /* Reiterate pointer cursor */
+}
+
+.qr-code-cell:hover .qr-code-container {
+    transform: translate(-50%, -50%) scale(3.5); /* Keep Increased scale */
+    z-index: 10; /* Bring to front */
+    transition: transform 0.2s ease-in-out, z-index 0s linear 0s; /* Immediate z-index change on hover */
+}
+
+/* Style the QR code image itself */
+.qr-code-container img {
+    display: block; /* Ensure img behaves like a block element */
+    width: 100%;
+    height: 100%; /* Restore fixed height */
+}
+
+/* --- New Style for QR Code URL --- */
+/*
+.qr-code-url {
+    display: none; 
+    position: absolute; 
+    bottom: 2px; 
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 8px; 
+    color: #007bff; 
+    background-color: rgba(255, 255, 255, 0.8); 
+    padding: 1px 0;
+    word-break: break-all; 
+    text-decoration: none; 
+}
+
+.qr-code-cell:hover .qr-code-url {
+    display: block; 
+}
+*/
+/* --- End QR Code URL Styling --- */
+
+/* --- End QR Code Styling --- */
+
+
+/* --- Footer Styling --- */
+
+.footer {
+    position: fixed;
+    left: 0;
+}
+
+/* Default state for print container - hidden on screen */
+#print-container {
+    display: none;
+}
+
+/* --- Print Specific Styles --- */
+@media print {
+    /* Hide everything except the print container and its children */
+    body > *:not(#print-container) {
+        display: none !important;
+    }
+
+    /* Ensure the print container is visible */
+    #print-container,
+    #print-container * {
+        display: block !important; /* Override any other display settings */
+        visibility: visible !important; /* Ensure visibility */
+    }
+
+    /* Style the print container */
+    #print-container {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); /* Slightly larger min for aspect ratio */
+        gap: 20px; /* Spacing between stickers */
+        margin: 10mm; /* Add some margin for printing */
+        width: auto !important; /* Let it fill print area */
+    }
+
+    /* Style each sticker item */
+    .print-qr-item {
+        border: 1px dashed #888; /* Optional border for cutting */
+        padding: 5px;
+        text-align: center;
+        page-break-inside: avoid; /* Try to keep item on one page */
+        display: flex; /* Use flexbox for layout */
+        flex-direction: column; /* Stack label and QR vertically */
+        justify-content: space-between; /* Push label to top, QR towards bottom */
+        align-items: center; /* Center horizontally */
+        /* Add a min-height to ensure consistent vertical space */
+        min-height: 190px; /* Adjust as needed based on max label height + QR height + spacing */
+    }
+
+    /* Style the label */
+    .print-qr-label {
+        font-family: Arial, sans-serif; /* Use a standard print font */
+        font-size: 10pt; /* Adjust size as needed */
+        color: #000;
+        margin-bottom: 5px;
+        word-break: break-word;
+    }
+
+    /* Style the QR code div itself */
+    .print-qr-code {
+        width: 150px; /* Target sticker width */
+        aspect-ratio: 1 / 1; /* Enforce square aspect ratio */
+        margin: 0 auto; /* Center the QR code */
+        overflow: hidden; /* Hide potential overflow if image is slightly off */
+    }
+
+    /* Ensure QR image fills its container WITHOUT distortion */
+    .print-qr-code img {
+        width: 100% !important;
+        height: 100% !important;
+        display: block !important;
+        object-fit: contain; /* Scale image down to fit container, maintaining aspect ratio */
+    }
+}
+/* --- End Print Styles --- 
+
+/* --- Enlarged QR Code Overlay Styles --- */
+#enlarge-qr-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85); /* Darker overlay */
+    z-index: 1050; /* Higher than other modals potentially */
+    justify-content: center;
+    align-items: center;
+}
+
+#enlarge-qr-overlay #close-enlarge-qr {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 3rem;
+    color: #fff;
+    background: none;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+}
+
+#enlarge-qr-content {
+    background-color: #f0f0f0; /* Light background for contrast */
+    padding: 30px;
+    border-radius: 5px;
+    max-width: 90vw; /* Max width relative to viewport */
+    max-height: 85vh; /* Max height relative to viewport */
+    overflow-y: auto; /* Allow scrolling if many codes */
+    display: flex;
+    flex-wrap: wrap; /* Arrange codes in rows */
+    gap: 25px; /* Space between codes */
+    justify-content: center;
+}
+
+.enlarged-qr-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.enlarged-qr-label {
+    font-family: Arial, sans-serif;
+    font-size: 12pt;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.enlarged-qr-code {
+    width: 250px; /* Size for enlarged QR code */
+    height: 250px;
+    background-color: white; /* Ensure white background for QR */
+    padding: 10px; /* Padding around QR */
+    border: 1px solid #ccc;
+}
+
+.enlarged-qr-code img {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;
+}
+/* --- End Enlarged QR Code Styles --- 
+
+/* --- QR Enlarge Modal Styles --- */
+.modal-overlay {
+    position: fixed; /* Stay in place */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.7); /* Black w/ opacity */
+    z-index: 1000; /* Sit on top */
+    display: flex; /* Use flexbox for centering */
+    align-items: center; /* Vertical center */
+    justify-content: center; /* Horizontal center */
+}
+
+.modal-content {
+    background-color: #2c3e50; /* Dark background for modal */
+    color: #ecf0f1; /* Light text */
+    margin: auto; /* Auto margins for centering (backup) */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%; /* Use percentage for flexibility */
+    max-width: 450px; /* Increased Max width */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    border-radius: 8px;
+    position: relative; /* Needed for absolute positioning of close button */
+    text-align: center; /* Center content */
+}
+
+.modal-close-button {
+    color: #aaa;
+    position: absolute; /* Position relative to modal-content */
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 1; /* Ensure it doesn't take too much vertical space */
+}
+
+.modal-close-button:hover,
+.modal-close-button:focus {
+    color: #ecf0f1; /* Lighter color on hover */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#enlarged-qr-code-container {
+    margin: 20px auto; /* Center the QR code block */
+    display: inline-block; /* Ensure background doesn't fill width */
+    background-color: white; /* White background for QR */
+    padding: 5px; /* Reduced Padding around QR code */
+    border-radius: 5px;
+}
+
+#enlarged-qr-code-container img {
+    display: block; /* Prevent extra space below image */
+    margin: auto; /* Center image if needed (shouldn't be necessary) */
+}
+
+#enlarged-qr-url {
+    font-size: 0.9em;
+    color: #bdc3c7; /* Lighter grey */
+    word-break: break-all; /* Wrap long URLs */
+    margin-top: 15px;
+    cursor: pointer; /* Indicate it's clickable */
+    padding: 5px;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+}
+
+#enlarged-qr-url:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Slight highlight on hover */
+}
+
+/* Style for the new table cell/button if needed */
+.qr-code-actions {
+   /* Add specific styles if default button isn't okay */
+}
+
+.copyable-text { /* Basic style for copyable text */
+    cursor: pointer;
+}
+.copyable-text:hover {
+    opacity: 0.8;
+}
+
+/* Style for the statistics panel title */
+#statistics-view #stats-title {
+    text-align: center; /* Center the text */
+    font-size: 2.5rem; /* Make the font significantly larger */
+    margin-top: 20px; /* Add some space above the title */
+    margin-bottom: 30px; /* Add some space below the title */
+    width: 100%; /* Ensure it takes full width for centering */
+}
+
+/* Style the inner panel within the statistics view */
+#statistics-view #admin-panel {
+    background-color: #fff; /* White background for the inner content area */
+    color: #333; /* Dark text for readability on white */
+    padding: 25px; /* Inner spacing */
+    border-radius: 15px; /* Rounded corners like the screenshot */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    margin: 10px; /* Add some margin inside the outer grey container */
+}
+
+/* Ensure the title inside the white stats panel is dark */
+#statistics-view #stats-title {
+    color: #333; /* Dark color for the title */
+}
+
+/* Styling for the inner user info panel on home.html */
+.info-panel-inner {
+    background-color: #fff; /* White background */
+    color: #333; /* Dark text for contrast */
+    padding: 20px; /* Inner padding */
+    border-radius: 10px; /* Slightly rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
+    margin: 10px; /* Margin inside the grey admin-panel */
+}
+
+.info-panel-inner p {
+    margin-bottom: 0.8em; /* Spacing between info lines */
+    line-height: 1.6; /* Adjust line height for readability */
+    font-size: 1rem; /* Base font size */
+    text-align: left; /* Align text to the left */
+}
+
+.info-panel-inner strong {
+    display: inline-block; /* Allows setting width */
+    width: 150px; /* Fixed width for labels */
+    margin-right: 10px; /* Space between label and value */
+}
+
+/* Style for the main content panel on the Home page */
+#home-view-panel {
+    width: 90%; /* Example width */
+    margin: 100px auto 20px auto; /* Adjusted top margin, keep side/bottom margins */
+    padding: 20px; 
+    background-color: #f9f9f9; /* Light grey background */
+    border: 2px solid #a0a0a0; /* Thicker border for separation */
+    border-radius: 20px; /* Increased rounding */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+    /* display: block; /* Default is block, no need to set if not flex etc. */
+}
+
+/* ==================
+   NEW: AI Analysis Table Formatting
+   ================== */
+.stats-trends-body td {
+    /* General cell styling & Container for AI Output */
+    text-align: left;
+    vertical-align: top;
+    font-family: sans-serif; 
+    font-size: 16px; /* Base font size for body text */
+    line-height: 1.65; /* Increased line height */
+    color: #444; /* Standard body text color */
+    background-color: #f9f9f9; /* Light background for the container */
+    padding: 20px; /* Padding within the container */
+    border: 1px solid #ddd; /* Subtle border */
+    border-radius: 6px; /* Rounded corners */
+    margin-top: 20px; /* Space above the container */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Subtle box shadow */
+}
+
+.stats-trends-body td h3 {
+    /* Section Title styling */
+    font-size: 1.25em; /* ~20px if base is 16px */
+    font-weight: 700; /* Bold */
+    color: #007BFF; /* Accent blue color for titles */
+    margin-top: 20px; /* Specific pixel margin above titles */
+    margin-bottom: 12px; /* Specific pixel margin below titles */
+    padding-bottom: 0.3em; 
+    border-bottom: 1px solid #ccc; 
+}
+/* Reduce top margin for the very first heading */
+.stats-trends-body td h3:first-of-type {
+    margin-top: 0.5em;
+}
+
+.stats-trends-body td p {
+    /* Paragraph styling */
+    margin-bottom: 12px; /* Adjusted paragraph spacing */
+    line-height: 1.65; /* Ensure consistent line height */
+}
+
+.stats-trends-body td ul,
+.stats-trends-body td ol {
+    /* List styling */
+    margin-left: 0; 
+    padding-left: 1.5em; 
+    margin-bottom: 1em;
+    list-style-position: outside; 
+}
+
+.stats-trends-body td ul {
+    list-style-type: disc; 
+}
+
+.stats-trends-body td ol {
+    list-style-type: decimal; 
+}
+
+.stats-trends-body td li {
+    /* List item styling */
+    margin-bottom: 8px; /* Adjusted list item spacing */
+    line-height: 1.65; /* Ensure consistent line height */
+}
+
+/* Optional: Styles for the 'Last updated' timestamp */
+.stats-trends-body td p em {
+    font-size: 0.85em; /* Smaller font size */
+    color: #666; /* Grey color */
+    font-style: italic;
+}
+.stats-trends-body td p:last-child em {
+    display: block; /* Make it block level */
+    text-align: right; /* Align to the right */
+    margin-top: 1.5em; /* Add space above */
+}
+
+
+/* ==================
+   Modal Styles
+   ================== */

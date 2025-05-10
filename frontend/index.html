@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Authenticity Search</title>
+	<link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+    <!-- Include qrcode.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+	<!-- Styles for positioning and input consistency -->
+	<style>
+		.container {
+			position: relative; /* Needed for absolute positioning */
+			min-height: 100vh; /* Ensure container takes full height */
+		}
+		#top-left-nav {
+			position: absolute;
+			top: 15px;
+			left: 15px;
+			z-index: 10;
+		}
+		.auth-screen {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			padding: 20px;
+			min-height: 80vh; /* Ensure it takes height */
+		}
+		/* Style auth inputs like #search-text */
+		.auth-screen input[type="text"],
+		.auth-screen input[type="email"],
+		.auth-screen input[type="password"] {
+			padding: 1rem; /* Match style.css */
+			border: none;
+			border-radius: 2rem; /* Match style.css */
+			font-size: 1.5rem; /* Match style.css */
+			margin-bottom: 1rem; /* Match style.css */
+			width: 40rem; /* Match style.css */
+			max-width: 90%; /* Prevent overflow on smaller screens */
+			text-align: center;
+			background-color: #fff;
+			box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3); /* Match style.css */
+			font-family: sans-serif; /* Override game font for inputs */
+		}
+		/* Center align forms within auth screens */
+		.auth-screen form {
+			 display: flex;
+			 flex-direction: column;
+			 align-items: center; 
+		}
+
+		/* Center main search content for logged-out users */
+		#main-search-content {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			padding: 20px;
+			min-height: 80vh;
+		}
+
+		/* Removed Status Message Styling for fixed centering */
+		
+	</style>
+</head>
+<body>
+	<div class="container">
+
+		<!-- Top-Left Back Button (Hidden initially) -->
+		<div id="top-left-nav" style="display: none;">
+			<button type="button" class="back-button search-button">Go to Search</button>
+			<button id="stats-button" type="button" class="search-button" style="display: none; margin-left: 10px;">Go to Statistics</button>
+			<button id="home-button" type="button" class="search-button" style="display: none; margin-left: 10px;">Home</button>
+		</div>
+
+		<!-- Top Right Navigation / Logout Section -->
+		<div id="top-right-nav">
+			<button id="login-nav-button" type="button" class="search-button">Login</button>
+			<button id="register-nav-button" type="button" class="search-button">Register</button>
+		</div>
+		<div id="logout-section" style="display: none;">
+			Welcome, <span id="logged-in-user"></span>! 
+			<button id="logout-button" type="button" class="search-button">Logout</button>
+		</div>
+
+		<!-- Main Search Content (Visible initially, hidden when logged in) -->
+		<div id="main-search-content">
+			<h1>Let's Search This Stuff</h1>
+			<!-- Status Message Area Removed -->
+			
+			<!-- Item Search Area (Always visible structure when main content is shown) -->
+			<div id="app-section"> 
+				<form class="form-to-get" onsubmit="return false;">
+					<input id="search-text" type="text" placeholder="Enter full serial number (first 4 chars will identify company)" name="text-search" required>
+					<button id="search-button" class="search-button" type="button"> Search </button>
+					<div class="search-result"> <!-- Default content set by JS --> </div>
+				</form>
+			</div>
+		</div>
+
+		<!-- Login Screen (Hidden Initially) -->
+		<div id="login-screen" class="auth-screen" style="display: none;">
+			<form id="login-form">
+				<h2>Login</h2>
+				<!-- Login Status Message Area Removed -->
+				<input id="login-email" type="email" placeholder="Email" required>
+				<input id="login-password" type="password" placeholder="Password" required>
+				<button type="submit" class="search-button">Login</button>
+			</form>
+		</div>
+
+		<!-- Registration Screen (Hidden Initially) -->
+		<div id="register-screen" class="auth-screen" style="display: none;">
+			<form id="register-form">
+				<h2>Register New Company</h2>
+				<!-- Register Status Message Area Removed -->
+				<input id="register-name" type="text" placeholder="Company Name" required>
+				<input id="register-email" type="email" placeholder="Email" required>
+				<input id="register-company-id" type="text" placeholder="Company ID (4 digits)" required title="Please enter exactly 4 digits">
+				<input id="register-password" type="password" placeholder="Password" required>
+				<button type="submit" class="search-button">Register</button>
+			</form>
+		</div>
+
+		<!-- Logged-in / Admin Panel View (Moved Inside Container) -->
+		<div id="logged-in-view" class="screen">
+			<div id="admin-layout-container">
+				<div id="admin-panel">
+					<!-- Action Buttons -->
+					<div id="admin-action-buttons">
+						<button id="add-item-button" type="button" class="search-button">Add New Item</button>
+						<button id="modify-selected-button" type="button" class="search-button">Modify Selected</button>
+						<button id="print-selected-button" type="button" class="search-button">Print Selected</button> 
+						<!-- <button id="enlarge-qr-button" type="button" class="search-button">Enlarge Selected QR</button> -->
+						<button id="delete-selected-button" type="button" class="search-button cancel-button">Delete Selected</button>
+						<!-- <button id="upload-items-button" type="button" class="search-button">Upload Items (JSON)</button> -->
+						<input type="file" id="item-file-input" accept=".json" style="display: none;">
+					</div>
+					
+					<!-- Admin Panel Status Message Area -->
+					<div id="admin-status-message" style="min-height: 1.2em; margin-bottom: 15px; font-weight: bold; text-align: center;"></div>
+					
+					<!-- Add Item Form (hidden initially) -->
+					<div id="add-item-form-container" style="display: none;">
+						<form id="add-item-form">
+							<h4 id="item-form-title">Add New Item</h4>
+							<input type="text" id="item-name" placeholder="Item Name" required>
+							<input type="text" id="item-type" placeholder="Item Type" required>
+							<input type="text" id="item-serial-number" placeholder="Serial Number - XXXX-XXXX-XXXX-XXXX" required>
+							<button type="submit" id="save-item-button" class="search-button">Save Item</button>
+							<button type="button" id="cancel-add-item-button" class="search-button cancel-button">Cancel</button> 
+						</form>
+					</div>
+
+					<hr class="admin-separator"> 
+
+					<!-- Item List Area -->
+					<div id="item-list-container">
+						<h3>Your Items</h3> 
+						<table id="company-item-table">
+							<thead>
+								<tr>
+									<th style="width: 5%;"><input type="checkbox" id="select-all-checkbox" title="Select/Deselect All Items"></th>
+									<th style="width: 25%;">Serial Number</th>
+									<th style="width: 25%;">Item Name</th>
+									<th style="width: 15%;">Type</th>
+									<th style="width: 15%;">Owner</th>
+									<th style="width: 5%;">QR Code</th>
+									<th style="width: 10%;">QR-code Actions</th>
+								</tr>
+							</thead>
+							<tbody id="company-item-table-body">
+								<!-- Placeholder / Example Item Row (will be replaced by JS) -->
+								<tr class="list-item" data-serial="EXAMPLE123">
+									<td><input type="checkbox" class="item-select-checkbox" value="EXAMPLE123"></td> 
+									<td>EXAMPLE123</td>
+									<td>Example Item</td>
+									<td>Widget</td>
+									<td>ExampleOrg</td>
+									<td class="qr-code-cell"><div class="qr-code-container"></div></td>
+									<td class="qr-code-actions">
+										<button class="qr-code-action" data-serial="EXAMPLE123">Enlarge</button>
+									</td>
+								</tr>
+								<!-- Items will be populated here by JS -->
+								<tr><td colspan="6">Loading items...</td></tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Admin Company List View (Hidden Initially) -->
+		<div id="admin-company-list-view" class="screen" style="display: none;">
+			<div id="admin-layout-container">
+				<div id="admin-panel">
+					<h2>Registered Companies</h2>
+					<div id="admin-companies-status-message" style="min-height: 1.2em; margin-bottom: 15px; font-weight: bold; text-align: center;"></div>
+					
+					<!-- Company Action Buttons -->
+					<div id="admin-company-action-buttons" style="margin-bottom: 15px; text-align: center;">
+						<button id="activate-selected-companies-button" class="search-button" style="padding: 8px 15px;">Activate Selected</button>
+						<button id="deactivate-selected-companies-button" class="search-button" style="padding: 8px 15px;">Deactivate Selected</button>
+						<button id="delete-selected-companies-button" class="search-button cancel-button" style="padding: 8px 15px;">Delete Selected</button>
+					</div>
+
+					<table id="all-companies-table">
+						<thead>
+							<tr>
+								<th style="width: 5%;"><input type="checkbox" id="select-all-companies-checkbox" title="Select/Deselect All"></th>
+								<th style="width: 25%;">Email</th>
+								<th style="width: 20%;">Company Name</th>
+								<th style="width: 15%;">Role</th>
+								<th>Registered At</th>
+								<th>Active</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody id="all-companies-table-body">
+							<!-- Company rows will be inserted here by JS -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<!-- NEW: Statistics View (Hidden Initially) -->
+		<div id="statistics-view" class="screen" style="display: none;">
+			<!-- This nav is positioned absolutely relative to div.container -->
+			<div class="stats-nav" style="position: absolute; top: 15px; left: 15px; z-index: 10; display: none;">
+				<button id="back-to-admin-button" type="button" class="search-button">Back to Admin Panel</button>
+			</div>
+			<!-- NEW: Add admin layout wrappers for consistent styling -->
+			<div id="admin-layout-container"> 
+				<div id="admin-panel">
+					<div class="stats-content-area" style="padding: 20px;">
+						<div id="item-list-container"> 
+							<!-- Month Navigation -->
+							<div id="month-nav" style="text-align: center; margin-bottom: 15px;">
+								<button id="prev-month-button" type="button" class="search-button"> &lt; Prev Month</button>
+								<span id="current-month-display" style="margin: 0 15px; font-weight: bold; font-size: 1.2em;">Loading Month...</span>
+								<button id="next-month-button" type="button" class="search-button">Next Month &gt; </button>
+							</div>
+							<!-- END Month Navigation -->
+
+							<h3 id="stats-title">Statistics Loading...</h3>
+							<!-- <p id="stats-date-range" style="text-align: center; margin-bottom: 15px;">Date Range: Loading...</p> -->
+
+							<div class="stats-tables-container">
+
+								<!-- Table 1: Overall Summary -->
+								<table id="stats-summary-table" class="stats-table">
+									<thead>
+										<tr>
+											<th>Metric</th>
+											<th>Value</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>Total Checks (in period)</td>
+											<td id="stats-total-checks">-</td>
+										</tr>
+										<tr>
+											<td>Success Count</td>
+											<td id="stats-success-count">-</td>
+										</tr>
+										<tr>
+											<td>Failure Count</td>
+											<td id="stats-fail-count">-</td>
+										</tr>
+										<tr>
+											<td>Success Percentage</td>
+											<td id="stats-success-percentage">-%</td>
+										</tr>
+										 <tr>
+											<td>Failure Percentage</td>
+											<td id="stats-fail-percentage">-%</td>
+										</tr>
+									</tbody>
+								</table>
+
+								<!-- Table 2: Geographic Distribution -->
+								<table id="stats-location-table" class="stats-table">
+									<thead>
+										<tr>
+											<th>Location (Top 5)</th>
+											<th>Check Count</th>
+										</tr>
+									</thead>
+									<tbody id="stats-location-body">
+										<!-- Location rows will be inserted here by JS -->
+										<tr><td colspan="2">Loading location data...</td></tr>
+									</tbody>
+								</table>
+
+								<!-- Table 3: Trends (Placeholder) -->
+								<table id="stats-trends-table" class="stats-table">
+									<thead>
+										<tr>
+											<th>AI Suggestions <button id="analyze-ai-button" type="button" class="search-button" style="padding: 3px 8px; font-size: 0.8em; margin-left: 15px;">Analyze by AI</button></th>
+										</tr>
+									</thead>
+									<tbody id="stats-trends-body">
+										<tr><td colspan="1">Click "Analyze by AI" for insights...</td></tr>
+									</tbody>
+								</table>
+
+							</div> <!-- END stats-tables-container -->
+						</div> <!-- END item-list-container -->
+					</div> <!-- END stats-content-area -->
+				</div> <!-- END admin-panel -->
+			</div> <!-- END admin-layout-container -->
+		</div>
+		<!-- END statistics-view -->
+
+	</div>
+	<!-- Original buttons commented out -->
+	<!-- <div class="buttons">
+		<button>About Us</button>
+		<button>All Items</button>
+	</div> -->
+
+	<!-- ADD Dynamic Script Loader for Cache Busting -->
+	<script>
+		(function() {
+			const timestamp = new Date().getTime();
+			const script = document.createElement('script');
+			script.src = `responses.js?v=${timestamp}`;
+			document.head.appendChild(script); // Append to head for cleaner loading
+			console.log(`[Cache Buster] Loading script: ${script.src}`);
+			console.log('[Cache Buster] Script element appended to head.');
+		})();
+	</script>
+
+    <!-- Registration Success Modal -->
+    <div id="registration-success-modal" class="modal">
+        <div class="modal-content">
+            <h2>Registration Successful!</h2>
+            <p>Your company account has been created. You can now log in.</p>
+            <button id="modal-ok-button" class="search-button">OK</button>
+        </div>
+    </div>
+
+    <!-- NEW: Custom Confirmation Modal -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <h2 id="confirmation-modal-title">Confirm Action</h2>
+            <p id="confirmation-modal-message">Are you sure?</p>
+            <div class="modal-buttons">
+                <button id="confirm-yes-button" class="modal-button modal-button-yes">Yes</button>
+                <button id="confirm-no-button" class="modal-button modal-button-no">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- General Application Logic -->
+    <script src="responses.js"></script>
+
+    <!-- Specific JS for App Initialization (if needed, or remove if responses.js handles all) -->
+    <!-- REMOVED: <script src="app.js"></script>  --> 
+	
+	<!-- Status Message Container (Centrally Positioned) -->
+	<div id="status-message" class="status-message-container"></div>
+    <div id="login-status-message" class="status-message-container"></div> 
+    <div id="register-status-message" class="status-message-container"></div>
+	
+	<!-- Container for printing QR Codes -->
+    <div id="print-container" aria-hidden="true"></div>
+
+    <!-- Overlay for Enlarged QR Codes -->
+    <div id="enlarge-qr-overlay">
+        <button id="close-enlarge-qr">&times;</button>
+        <div id="enlarge-qr-content"></div>
+    </div>
+
+    <!-- QR Code Enlarge Modal -->
+    <div id="qr-enlarge-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close-button" onclick="closeQrModal()">&times;</span>
+            <h2>Enlarged QR Code</h2>
+            <div id="enlarged-qr-code-container">
+                <!-- Enlarged QR code will be generated here -->
+            </div>
+            <p id="enlarged-qr-url" class="copyable-text" title="Click to copy URL"></p>
+        </div>
+    </div>
+
+</body>
+</html>

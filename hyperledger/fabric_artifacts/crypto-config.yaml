@@ -1,0 +1,60 @@
+
+OrdererOrgs:
+  # ---------------------------------------------------------------------------
+  # Orderer
+  # ---------------------------------------------------------------------------
+  - Name: Orderer
+    Domain: product.authenticity.com
+    EnableNodeOUs: true
+
+    # ---------------------------------------------------------------------------
+    # "Specs" - See PeerOrgs below for complete description
+    # ---------------------------------------------------------------------------
+    Specs:
+      - Hostname: orderer0
+        SANS:
+            - "localhost"
+            - "127.0.0.1"
+      - Hostname: orderer1
+        SANS:
+          - "localhost"
+          - "127.0.0.1"
+      - Hostname: orderer2
+        SANS:
+            - "localhost"
+            - "127.0.0.1"
+
+# ---------------------------------------------------------------------------
+# "PeerOrgs" - Definition of organizations managing peer nodes
+# ---------------------------------------------------------------------------
+PeerOrgs:
+  # ---------------------------------------------------------------------------
+  # Org1
+  # ---------------------------------------------------------------------------
+  - Name: Samsung
+    Domain: samsung.product.authenticity.com
+    EnableNodeOUs: true
+
+    Template:
+      Count: 2  #Identities for two peer nodes
+      # Start: 5
+      # Hostname: {{.Prefix}}{{.Index}} # default
+      SANS:
+        - "localhost"
+
+    Users:
+      Count: 1 #By default have one admin user, so specify 1 we adding our brand-new user identity
+
+  - Name: Sony
+    Domain: sony.product.authenticity.com
+    EnableNodeOUs: true
+
+    Template:
+      Count: 2 #Identities for two peer nodes
+      # Start: 5
+      # Hostname: {{.Prefix}}{{.Index}} # default
+      SANS:
+        - "localhost"
+
+    Users:
+      Count: 1 #By default have one admin user, so specify 1 we adding our brand-new user identity

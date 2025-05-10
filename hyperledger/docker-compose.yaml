@@ -1,0 +1,322 @@
+version: "3.3"
+
+services:
+  ca-general-org-1:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.samsung.product.authenticity.com
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.samsung.product.authenticity.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/priv_sk
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-tls/tlsca.samsung.product.authenticity.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-tls/priv_sk
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start -b ${CA_SERVERS_ADMIN_GENERAL}:${CA_SERVERS_SECRET_GENERAL} -d'
+    volumes:
+      - ./fabric_artifacts/crypto-config/peerOrganizations/samsung.product.authenticity.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./fabric_artifacts/crypto-config/peerOrganizations/samsung.product.authenticity.com/tlsca/:/etc/hyperledger/fabric-ca-server-tls
+    container_name: ca-general-org-1
+    hostname: ca.samsung.product.authenticity.com
+    networks:
+        default:
+            aliases:
+                - ca.samsung.product.authenticity.com
+
+  orderer0.product.authenticity.com:
+    container_name: orderer0.product.authenticity.com
+    image: hyperledger/fabric-orderer:2.1
+    dns_search: .
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=info
+      - FABRIC_LOGGING_SPEC=INFO
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_KAFKA_VERBOSE=true
+      - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_METRICS_PROVIDER=prometheus
+      - ORDERER_OPERATIONS_LISTENADDRESS=0.0.0.0:8443
+      - ORDERER_GENERAL_LISTENPORT=7050
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/orderers
+    command: orderer
+    ports:
+      - 7050:7050
+      - 8443:8443
+
+    volumes:
+      - ./fabric_artifacts/genesis.block:/var/hyperledger/orderer/genesis.block
+      - ./fabric_artifacts/crypto-config/ordererOrganizations/product.authenticity.com/orderers/orderer0.product.authenticity.com/msp:/var/hyperledger/orderer/msp
+      - ./fabric_artifacts/crypto-config/ordererOrganizations/product.authenticity.com/orderers/orderer0.product.authenticity.com/tls:/var/hyperledger/orderer/tls
+
+  orderer1.product.authenticity.com:
+    container_name: orderer1.product.authenticity.com
+    image: hyperledger/fabric-orderer:2.1
+    dns_search: .
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=info
+      - FABRIC_LOGGING_SPEC=info
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_KAFKA_VERBOSE=true
+      - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_METRICS_PROVIDER=prometheus
+      - ORDERER_OPERATIONS_LISTENADDRESS=0.0.0.0:8443
+      - ORDERER_GENERAL_LISTENPORT=8050
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/orderers
+    command: orderer
+    ports:
+      - 8050:8050
+      - 8444:8443
+
+    volumes:
+      - ./fabric_artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ./fabric_artifacts/crypto-config/ordererOrganizations/product.authenticity.com/orderers/orderer1.product.authenticity.com/msp:/var/hyperledger/orderer/msp
+      - ./fabric_artifacts/crypto-config/ordererOrganizations/product.authenticity.com/orderers/orderer1.product.authenticity.com/tls:/var/hyperledger/orderer/tls
+
+  orderer2.product.authenticity.com:
+    container_name: orderer2.product.authenticity.com
+    image: hyperledger/fabric-orderer:2.1
+    dns_search: .
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=info
+      - FABRIC_LOGGING_SPEC=info
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_KAFKA_VERBOSE=true
+      - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_METRICS_PROVIDER=prometheus
+      - ORDERER_OPERATIONS_LISTENADDRESS=0.0.0.0:8443
+      - ORDERER_GENERAL_LISTENPORT=9050
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/orderers
+    command: orderer
+    ports:
+      - 9050:9050
+      - 8445:8443
+
+    volumes:
+      - ./fabric_artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ./fabric_artifacts/crypto-config/ordererOrganizations/product.authenticity.com/orderers/orderer2.product.authenticity.com/msp:/var/hyperledger/orderer/msp
+      - ./fabric_artifacts/crypto-config/ordererOrganizations/product.authenticity.com/orderers/orderer2.product.authenticity.com/tls:/var/hyperledger/orderer/tls
+
+  peer0.general.product.authenticity.com:
+    container_name: peer0.general.product.authenticity.com
+    hostname: peer0.samsung.product.authenticity.com
+    networks:
+        default:
+            aliases:
+                - peer0.samsung.product.authenticity.com
+    image: hyperledger/fabric-peer:2.1
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    dns_search: .
+    env_file: ./.env_common_peers
+    command: peer node start
+    environment:
+      - FABRIC_LOGGING_SPEC=info
+      - ORDERER_GENERAL_LOGLEVEL=info
+      - CORE_PEER_LOCALMSPID=Samsung1MSP
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hyperledger_default
+      - CORE_PEER_ID=peer0.samsung.product.authenticity.com
+      - CORE_PEER_ADDRESS=peer0.samsung.product.authenticity.com:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.samsung.product.authenticity.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.samsung.product.authenticity.com:8051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.samsung.product.authenticity.com:7051
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb_peer0:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=${COUCH_DB_USER}
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=${COUCH_DB_PASS}
+      - CORE_METRICS_PROVIDER=prometheus
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/crypto/peer/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/crypto/peer/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/crypto/peer/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/crypto/peer/msp
+    depends_on:
+      - couchdb_peer0
+    ports:
+      - 7051:7051
+    volumes:
+      - ./fabric_artifacts/crypto-config/peerOrganizations/samsung.product.authenticity.com/peers/peer0.samsung.product.authenticity.com/msp:/etc/hyperledger/crypto/peer/msp
+      - ./fabric_artifacts/crypto-config/peerOrganizations/samsung.product.authenticity.com/peers/peer0.samsung.product.authenticity.com/tls:/etc/hyperledger/crypto/peer/tls
+      - /var/run/:/host/var/run/
+      - ./fabric_artifacts/:/etc/hyperledger/channel/
+
+
+  peer1.general.product.authenticity.com:
+    container_name: peer1.general.product.authenticity.com
+    hostname: peer1.samsung.product.authenticity.com
+    networks:
+        default:
+            aliases:
+                - peer1.samsung.product.authenticity.com
+    image: hyperledger/fabric-peer:2.1
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    dns_search: .
+    command: peer node start
+    env_file: ./.env_common_peers
+    environment:
+      - FABRIC_LOGGING_SPEC=info
+      - ORDERER_GENERAL_LOGLEVEL=info
+      - CORE_PEER_LOCALMSPID=Samsung1MSP
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hyperledger_default
+      - CORE_PEER_ID=peer1.samsung.product.authenticity.com
+      - CORE_PEER_ADDRESS=peer1.samsung.product.authenticity.com:8051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.samsung.product.authenticity.com:8052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.samsung.product.authenticity.com:8051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.samsung.product.authenticity.com:7051
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb_peer0:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=${COUCH_DB_USER}
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=${COUCH_DB_PASS}
+      - CORE_METRICS_PROVIDER=prometheus
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/crypto/peer/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/crypto/peer/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/crypto/peer/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/crypto/peer/msp
+    ports:
+      - 8051:8051
+    depends_on:
+      - couchdb_peer0
+    volumes:
+      - ./fabric_artifacts/crypto-config/peerOrganizations/samsung.product.authenticity.com/peers/peer1.samsung.product.authenticity.com/msp:/etc/hyperledger/crypto/peer/msp
+      - ./fabric_artifacts/crypto-config/peerOrganizations/samsung.product.authenticity.com/peers/peer1.samsung.product.authenticity.com/tls:/etc/hyperledger/crypto/peer/tls
+      - /var/run/:/host/var/run/
+      - ./fabric_artifacts/:/etc/hyperledger/channel/
+
+  peer2.general.product.authenticity.com:
+    container_name: peer2.general.product.authenticity.com
+    hostname: peer0.sony.product.authenticity.com
+    networks:
+        default:
+            aliases:
+                - peer0.sony.product.authenticity.com
+    image: hyperledger/fabric-peer:2.1
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    dns_search: .
+    command: peer node start
+    env_file: ./.env_common_peers
+    environment:
+      - FABRIC_LOGGING_SPEC=info
+      - ORDERER_GENERAL_LOGLEVEL=info
+      - CORE_PEER_LOCALMSPID=Sony2MSP
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hyperledger_default
+      - CORE_PEER_ID=peer0.sony.product.authenticity.com
+      - CORE_PEER_ADDRESS=peer0.sony.product.authenticity.com:9051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.sony.product.authenticity.com:9052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.sony.product.authenticity.com:9051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.sony.product.authenticity.com:10051
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb_peer0:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=${COUCH_DB_USER}
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=${COUCH_DB_PASS}
+      - CORE_METRICS_PROVIDER=prometheus
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/crypto/peer/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/crypto/peer/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/crypto/peer/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/crypto/peer/msp
+    ports:
+      - 9051:9051
+    depends_on:
+      - couchdb_peer0
+    volumes:
+      - ./fabric_artifacts/crypto-config/peerOrganizations/sony.product.authenticity.com/peers/peer0.sony.product.authenticity.com/msp:/etc/hyperledger/crypto/peer/msp
+      - ./fabric_artifacts/crypto-config/peerOrganizations/sony.product.authenticity.com/peers/peer0.sony.product.authenticity.com/tls:/etc/hyperledger/crypto/peer/tls
+      - /var/run/:/host/var/run/
+      - ./fabric_artifacts/:/etc/hyperledger/channel/
+
+
+  peer3.general.product.authenticity.com:
+    container_name: peer3.general.product.authenticity.com
+    hostname: peer1.sony.product.authenticity.com
+    networks:
+        default:
+            aliases:
+                - peer1.sony.product.authenticity.com
+    image: hyperledger/fabric-peer:2.1
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    dns_search: .
+    command: peer node start
+    env_file: ./.env_common_peers
+    environment:
+      - FABRIC_LOGGING_SPEC=info
+      - ORDERER_GENERAL_LOGLEVEL=info
+      - CORE_PEER_LOCALMSPID=Sony2MSP
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hyperledger_default
+      - CORE_PEER_ID=peer1.sony.product.authenticity.com
+      - CORE_PEER_ADDRESS=peer1.sony.product.authenticity.com:10051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:10051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.sony.product.authenticity.com:10052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.sony.product.authenticity.com:10051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.sony.product.authenticity.com:9051
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb_peer0:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=${COUCH_DB_USER}
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=${COUCH_DB_PASS}
+      - CORE_METRICS_PROVIDER=prometheus
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/crypto/peer/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/crypto/peer/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/crypto/peer/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/crypto/peer/msp
+    ports:
+      - 10051:10051
+    depends_on:
+      - couchdb_peer0
+    volumes:
+      - ./fabric_artifacts/crypto-config/peerOrganizations/sony.product.authenticity.com/peers/peer1.sony.product.authenticity.com/msp:/etc/hyperledger/crypto/peer/msp
+      - ./fabric_artifacts/crypto-config/peerOrganizations/sony.product.authenticity.com/peers/peer1.sony.product.authenticity.com/tls:/etc/hyperledger/crypto/peer/tls
+      - /var/run/:/host/var/run/
+      - ./fabric_artifacts/:/etc/hyperledger/channel/
+
+  couchdb_peer0:
+    container_name: couchdb_peer0
+    build: ./dockerfile_couch_db
+    image: couchdb_hyper:v2
+    environment:
+      - COUCHDB_USER=${COUCH_DB_USER}
+      - COUCHDB_PASSWORD=${COUCH_DB_PASS}
+    ports:
+      - 9984:5984
+
+  authenticity_frontend:
+    container_name: authenticity_frontend
+    build: ../frontend
+    image: authenticity_frontend:v1
+    ports:
+      - 80:80

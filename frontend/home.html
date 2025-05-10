@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .home-container {
+            text-align: center;
+        }
+        /* Reuse button style from main page */
+        .search-button {
+			padding: 1rem 2rem;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 2rem;
+			font-size: 1.5rem;
+			cursor: pointer;
+			margin: 0.5rem;
+			font-family: 'Press Start 2P', cursive;
+			transition: background-color 0.3s ease;
+        }
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* ** Make AI button orange on home page ** */
+        #analyze-ai-button {
+            background-color: #FFA500; /* Orange */
+        }
+        #analyze-ai-button:hover {
+             background-color: #E69500; /* Darker orange on hover */
+        }
+    </style>
+</head>
+<body>
+    <!-- Use the main container structure -->
+    <div class="container">
+
+        <!-- Top-Left Navigation -->
+		<div id="top-left-nav" style="display: block;"> 
+            <button id="go-to-search-button" type="button" class="search-button">Go to Search</button>
+            <button id="go-to-stats-button" type="button" class="search-button" style="margin-left: 10px;">Go to Statistics</button>
+            <button id="go-to-panel-button" type="button" class="search-button" style="margin-left: 10px;">Go to Panel</button>
+		</div>
+
+        <!-- Top Right Navigation / Logout Section (Mirrors index.html) -->
+		<div id="top-right-nav"> 
+            <!-- Logout section will be populated by JS -->
+            <div id="logout-section" style="display: none;"> 
+                <span class="welcome-message">Welcome, <span id="logged-in-user-name">User</span>!</span>
+                <span id="logged-in-user-email" style="font-size: 0.8em; opacity: 0.8; margin-left: 5px; margin-right: 15px;">(email)</span> 
+                <button id="logout-button" type="button" class="search-button">Logout</button>
+            </div>
+        </div>
+
+        <!-- Use admin panel structure for styling -->
+        <!-- NEW: Outer panel to mimic the grey background from other views -->
+        <div id="home-view-panel"> 
+            <div id="admin-layout-container">
+                <div id="admin-panel"> 
+                    <!-- Changed original content to be more like a title -->
+                    <div class="home-title-area" style="text-align: center; padding: 10px 20px;">
+                        <h2 style="color: #333; margin-bottom: 5px;">Welcome Home!</h2>
+                        <p style="font-size: 1.1rem; color: #333;">This is the home page for logged-in users.</p>
+                    </div>
+
+                    <hr class="admin-separator"> <!-- Add separator -->
+
+                    <!-- Moved User Information inside the first panel -->
+                    <h3 style="text-align: center; color: #333; margin-bottom: 20px;">Your Information</h3>
+                    <!-- Add inner white panel for content -->
+                    <div class="info-panel-inner"> 
+                        <div id="user-info-content"> 
+                            <p><strong>Company Name:</strong> <span id="user-info-company-name">Loading...</span></p>
+                            <p><strong>Company ID:</strong> <span id="user-info-company-id">Loading...</span></p>
+                            <p><strong>Email:</strong> <span id="user-info-email">Loading...</span></p>
+                            <p><strong>Role:</strong> <span id="user-info-role">Loading...</span></p>
+                            <p><strong>Registered At:</strong> <span id="user-info-registered-at">Loading...</span></p>
+                            <!-- Password is intentionally excluded -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End home-view-panel -->
+
+        <!-- Copied Statistics View -->
+        <div id="statistics-view" class="screen" style="display: block; margin-top: 30px;"> <!-- Make visible and add margin -->
+			<!-- Removed the absolute positioned nav as it conflicts with home page nav -->
+            <!-- <div class="stats-nav" style="position: absolute; top: 15px; left: 15px; z-index: 10; display: none;">
+				<button id="back-to-admin-button" type="button" class="search-button">Back to Admin Panel</button>
+			</div> -->
+            <!-- Layout wrappers for styling -->
+			<div id="admin-layout-container"> 
+				<div id="admin-panel">
+					<div class="stats-content-area" style="padding: 20px;">
+						<div id="item-list-container"> 
+							<!-- Month Navigation -->
+							<div id="month-nav" style="text-align: center; margin-bottom: 15px;">
+								<button id="prev-month-button" type="button" class="search-button"> &lt; Prev Month</button>
+								<span id="current-month-display" style="margin: 0 15px; font-weight: bold; font-size: 1.2em;">Loading Month...</span>
+								<button id="next-month-button" type="button" class="search-button">Next Month &gt; </button>
+							</div>
+							<!-- END Month Navigation -->
+
+							<h3 id="stats-title">Statistics Loading...</h3>
+							<!-- <p id="stats-date-range" style="text-align: center; margin-bottom: 15px;">Date Range: Loading...</p> -->
+
+							<div class="stats-tables-container">
+
+								<!-- Table 1: Overall Summary -->
+								<table id="stats-summary-table" class="stats-table">
+									<thead>
+										<tr>
+											<th>Metric</th>
+											<th>Value</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>Total Checks (in period)</td>
+											<td id="stats-total-checks">-</td>
+										</tr>
+										<tr>
+											<td>Success Count</td>
+											<td id="stats-success-count">-</td>
+										</tr>
+										<tr>
+											<td>Failure Count</td>
+											<td id="stats-fail-count">-</td>
+										</tr>
+										<tr>
+											<td>Success Percentage</td>
+											<td id="stats-success-percentage">-%</td>
+										</tr>
+										 <tr>
+											<td>Failure Percentage</td>
+											<td id="stats-fail-percentage">-%</td>
+										</tr>
+									</tbody>
+								</table>
+
+								<!-- Table 2: Geographic Distribution -->
+								<table id="stats-location-table" class="stats-table">
+									<thead>
+										<tr>
+											<th>Location (Top 5)</th>
+											<th>Check Count</th>
+										</tr>
+									</thead>
+									<tbody id="stats-location-body">
+										<!-- Location rows will be inserted here by JS -->
+										<tr><td colspan="2">Loading location data...</td></tr>
+									</tbody>
+								</table>
+
+								<!-- Table 3: Trends (Placeholder) -->
+								<table id="stats-trends-table" class="stats-table">
+									<thead>
+										<tr>
+											<th>AI Suggestions <button id="analyze-ai-button" type="button" class="search-button" style="padding: 3px 8px; font-size: 0.8em; margin-left: 15px;">Analyze by AI</button></th>
+										</tr>
+									</thead>
+									<tbody id="stats-trends-body">
+										<tr><td colspan="1">Click "Analyze by AI" for insights...</td></tr>
+									</tbody>
+								</table>
+
+							</div> <!-- END stats-tables-container -->
+						</div> <!-- END item-list-container -->
+					</div> <!-- END stats-content-area -->
+				</div> <!-- END admin-panel -->
+			</div> <!-- END admin-layout-container -->
+		</div>
+		<!-- END Copied Statistics View -->
+
+    </div> 
+
+    <script>
+        // Load responses.js first, as it contains shared functions and initialization
+        (function() {
+			const timestamp = new Date().getTime();
+			const script = document.createElement('script');
+			script.src = `responses.js?v=${timestamp}`;
+            // Ensure home page script runs AFTER responses.js loads
+            script.onload = function() {
+                 console.log('[Home] responses.js loaded, running initializePage...');
+                 initializePage(); // Run unified initialization function
+            };
+            script.onerror = function() {
+                 console.error('[Home] Failed to load responses.js!');
+                 // Optionally, handle the error, maybe show a message
+                 // Attempt initialization anyway, some parts might still work if responses.js partially failed
+                 // or if elements don't depend on it.
+                 initializePage(); 
+            }
+			document.head.appendChild(script);
+			console.log(`[Home Cache Buster] Loading script: ${script.src}`);
+		})();
+
+        // let loggedInUser = null; // Store user data - Handled within responses.js now
+
+        // --- Login Check and UI Setup --- 
+        // REMOVED: function initializeHomePage() { ... } 
+        // All logic moved to initializePage in responses.js
+
+        // --- Run Initialization on Load --- 
+        // REMOVED: document.addEventListener('DOMContentLoaded', initializeHomePage);
+        // Initialization is now triggered by responses.js onload event above
+
+        /* Original simple script removed, replaced by initializeHomePage
+        // Back button navigation
+        document.getElementById('go-to-panel-button').addEventListener('click', function() {
+            // Navigate back to the main page admin view using hash
+            window.location.href = 'index.html#admin'; 
+        });
+
+        // Basic login check (should be replaced with your real auth check)
+        const userToken = localStorage.getItem('loggedInUser'); // Using 'loggedInUser' as per responses.js
+        if (!userToken) {
+            // If not logged in, redirect to the main login page
+            window.location.href = 'index.html#login'; 
+        }
+        // We might need to re-fetch user details here if needed on this page
+        // For now, just checking if token exists.
+        */
+    </script>
+</body>
+</html> 
